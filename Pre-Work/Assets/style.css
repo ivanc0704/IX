@@ -1,0 +1,210 @@
+@font-face {
+    font-family: 'Bebas'; /*a name to be used later*/
+    src: url('Fonts/BebasNeue-Regular.ttf'); /*URL to font*/
+}
+
+
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: black;
+    color: white;
+    margin-left: 10px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+
+#bg {
+    
+    /* The image used */
+    background-image: url("img/galaxy3.jpg");
+  
+    /* Full height */
+    height: 100%; 
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.title {
+        position: absolute;
+        font-family: "Bebas";
+        padding: 0;
+        margin: 0;
+        font-size: 200px;
+        color: white;
+        outline: 10px;
+        opacity: 0;
+        
+}
+#Hello{
+    left: 100px;
+
+    top: 100%;
+    text-align: left;
+}
+
+#Ivan{
+    right: 100px;
+    
+    top: 150%;
+    text-align: right;
+}
+
+nav{
+    margin-bottom: 100px;
+}
+
+nav ul {
+   /* background-image: linear-gradient(to right,#0A3B59, #38E0F2); */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li{
+    font-size: 25px;
+    list-style-type: none;
+    padding-left: 0;
+    margin-left: 0;
+    display: inline-flex;
+    padding: 10px;
+}
+nav ul li a:link, a:visited{
+    color: white;
+    text-decoration: none;
+
+}
+nav ul li a:hover{
+    color: #25B8D9;
+}
+
+
+#aboutme{
+    display: block;
+    padding-left: 25px;
+    padding-top: 0%;
+    margin-bottom: 250px;
+
+}
+
+#aboutme h2{
+    font-size: 50px;
+}
+
+#aboutme p{
+    margin-right: 25px;
+    font-size: 25px;
+    line-height: 1.8;
+}
+
+#me{
+    width: 20%;
+    height: 10%;
+    float: left;
+    padding-right: 25px;
+
+}
+
+#skillsandexperience{
+    clear: left;
+    display: block;
+    margin-bottom: 150px;
+
+}
+
+#skillsandexperience h2{
+    font-size: 50px;
+}
+
+.accordion-button {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+  }
+
+.accordion-button:hover {
+    font-size: 21px;
+  }
+.accordion-button:not(.collapsed) {
+    background-color: #25B8D9;
+    color: white;
+  }
+
+.accordion-item {
+    width:90%;
+    background-color: white;
+    font-size: 16px 
+  }
+  
+#skillsandexperience h3{
+    font-size: 40px;
+
+}
+
+#skillsandexperience h4{
+    font-size: 25px;
+
+}
+
+#skillsandexperience p{
+    font-size: 20px;
+
+}
+
+
+#hobbiesandinterests{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+
+}
+
+/*    background-image: linear-gradient(to bottom right,#4c175a,#863b87,#27214f,#9a52a3);
+*/
+#hobbiesandinterests h2{
+    font-size: 50px;
+    float: left;
+    clear: right;
+    width: 100%;
+}
+
+
+.box{
+    border-radius: 50%;
+    border: solid 2px #25B8D9;
+    height: 150px;
+    width: 150px;
+    margin: 25px;
+  
+}
+
+
+
+.content{
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer{
+    background-image: url(img/galaxy2.jpg);
+    padding-bottom: 50px;
+
+}
+
+footer h2{
+    font-size: 50px;
+}
+
+footer p{
+    font-size: 20px;
+    line-height: 10px;
+}
