@@ -1,8 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types"
 
 import "./index.css";
 
-export default function CategoryList({ categories }) {
+export default function CategoriesList({ categories }) {
   return (
     <div className="category-list">
       {categories.map((category) => {
@@ -16,7 +17,7 @@ export default function CategoryList({ categories }) {
             }}
           >
             <div
-              className="card-body"
+              className="card-body w-100"
               style={{
                 backgroundColor: category.color + "33",
                 position: "relative",
@@ -35,4 +36,10 @@ export default function CategoryList({ categories }) {
       })}
     </div>
   );
+}
+
+CategoriesList.propTypes = {
+  categories: PropTypes.array.isRequired,
+  categoryId: PropTypes.string.isRequired,
+  setCategoryId: PropTypes.func.isRequired,
 }
