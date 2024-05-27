@@ -1,45 +1,29 @@
 import React from "react";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-import "./index.css";
+export default function CategoryList({ categories }) {
+  const navigate = useNavigate();
 
-export default function CategoriesList({ categories }) {
   return (
     <div className="category-list">
-      {categories.map((category) => {
+      {categories.map((category, index) => {
         return (
-          <button
-            key={category.id}
+          <div
+            key={index}
             className="card"
             style={{ borderRadius: "0px", border: "none" }}
             onClick={() => {
-              console.log("TODO: Navigate to categories page");
+              navigate("/blogs/" + category.id);
             }}
           >
-            <div
-              className="card-body w-100"
-              style={{
-                backgroundColor: category.color + "33",
-                position: "relative",
-                zIndex: 0,
-              }}
-            >
-              <h5 className="card-title">{category.title}</h5>
-            </div>
-            <div className="card-body">
-              <p className="card-text">
-                {category.description.substring(1, 100)} ...
-              </p>
-            </div>
-          </button>
+          </div> 
         );
       })}
     </div>
   );
 }
 
-CategoriesList.propTypes = {
+CategoryList.propTypes = {
   categories: PropTypes.array.isRequired,
-  categoryId: PropTypes.string.isRequired,
-  setCategoryId: PropTypes.func.isRequired,
-}
+};

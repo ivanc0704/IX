@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types"
 
 import BlogItemText from "../BlogItemText";
+import { Link } from "react-router-dom";
+
 
 import "../../App.css";
 import "./index.css";
@@ -17,7 +19,7 @@ export default function BlogItem({
       <div
         key={index}
         className="card-1"
-        onClick={() => console.log("TODO: nav to blog")}
+        onClick={() => to= "/blog/1"}
       >
         <img src={blogPost.image} className="card-img-top" alt="..." />
         <div className="card-text-bottom">

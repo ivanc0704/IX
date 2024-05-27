@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import Navbar from "../../components/Navbar";
 import Heading from "../../components/Heading";
 import BlogList from "../../components/BlogList";
-import CategoriesList from "../../components/CategoryList";
 import Footer from "../../components/Footer";
 
 import "../../App.css";
@@ -11,23 +9,55 @@ import "./index.css";
 
 // Week 1: Import the blogPosts and categories from the dummy-data.json file
 const data = require("../../dummy-data.json");
-let blogPosts = data.blogPosts;
+const blogPosts = data.blogPosts;
 const categories = data.categories;
 
 export default function BlogsPage() {
 
-  const [categoryId, setCategoryId] = useState(undefined);
-  const [blogs, setBlogs] = useState([]);
 
-  useEffect(() => {
-    // Week 1: Filter the blogPosts based on the categoryId
-    const blogs = blogPosts.filter((x) =>
-      categoryId !== undefined
-        ? x.categories.find((y) => y.id.toString() === categoryId.toString())
-        : true
-    );
-    setBlogs(() => blogs);
-  }, [categoryId]);
+    const [blogs,setBlogs] = useState(blogPosts);
+    const [categoryId, setCategoryId] = useState();
+
+
+
+    useEffect(() => {
+
+        setBlogs(blogPosts);
+
+        if (categoryId) {
+            const filterBlogs = blogPosts.filter((blog) => {
+                return blog.categories.some((category) => category.id === categoryId);
+            });
+            setBlogs(filterBlogs);
+        }
+    }, 
+    [categoryId]
+);
+
+
+    const CategoriesList = ({categoryId}) => {
+        return categories.map((category) => {
+            return categoryId === category.id ? (
+                <button
+                key = {category.id}
+                onClick = { () => setCategoryId(category.id)}
+                style = {{color:"blue"}}
+                >
+                    <p key = {category.id}>{category.title}</p>
+                </button>
+            ) : (
+                <button
+                key={category.id}
+                onClick={() => setCategoryId(category.id)}
+                style= {{color:"black"}}
+                >
+                    <p key = {category.id}>{category.title}</p>
+                </button>
+            );
+        });
+    };
+
+
 
   return (
     <>
@@ -36,9 +66,8 @@ export default function BlogsPage() {
         <Heading />
         <div className="scroll-menu">
           <CategoriesList 
-              categories={categories} 
-              categoryId={categoryId}
-              setCategoryId={setCategoryId}>
+              categoryId={categoryId}>
+  
           </CategoriesList>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>

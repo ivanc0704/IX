@@ -1,31 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./index.css";
+
 import BlogItem from "../BlogItem";
 
 export default function BlogList({ blogPosts }) {
+  if (!blogPosts && !blogPosts?.length) {
+    return null;
+  }
+
+  // TODO: Styling
   return (
-    <div className="blog-list">
-      {blogPosts.map((blogPost, index) => {
+    <div className="d-flex w-100">
+      {blogPosts.map((blog, index) => {
         return (
-          <div
+          <BlogItem
             key={index}
-            style={{
-              width: "100%",
-            }}
-          >
-            <BlogItem
-              index={index}
-              blogPost={blogPost}
-              imageOrientation={"top"}
-            />
-          </div>
+            index={index}
+            blogPost={blog}
+            setBlog={() => {}}
+            imageOrientation={"top"}
+          />
         );
       })}
     </div>
   );
 }
 
-BlogList.propTypes = {
-  blogPosts: PropTypes.array.isRequired,
+BlogList.prototype = {
+    blogPosts: PropTypes.array.isRequired,
 };
