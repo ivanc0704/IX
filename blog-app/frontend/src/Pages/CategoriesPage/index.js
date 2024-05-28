@@ -1,23 +1,37 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 
 import Heading from '../../components/Heading';
 import Navbar from '../../components/Navbar';
 
-import CategoriesList from '../../components/CategoryList';
+import categoryService from '../../services/categoryService';
+import CategoryList from '../../components/CategoryList';
 
-const data = require("../../dummy-data.json");
-const categories = data.categories;
 
 export default function CategoriesPage() {
+  const [categories, setCategories] = useState();
+
+
+  useEffect(() => {
+
+    const fetchCategories = async () =>{
+      try{
+        const categoriesRes = await categoryService.getCategories();
+  
+        setCategories(categoriesRes)
+    
+      } catch(err){
+        console.log(err);
+      }
+    };
+    fetchCategories();
+  }, []);
   return (
     <>
       <Navbar />
       <div className="container">
         <Heading />
         </div>
-        <CategoriesList
-            categories={categories}
-            ></CategoriesList>
+        <CategoryList categories={[categories]}/>
     </>
   )
 }

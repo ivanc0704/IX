@@ -16,10 +16,10 @@ export default function BlogItem({
 }) {
   if (imageOrientation === "top") {
     return (
+      <Link to={"/blog/" + index+1}>
       <div
         key={index}
         className="card-1"
-        onClick={() => to= "/blog/1"}
       >
         <img src={blogPost.image} className="card-img-top" alt="..." />
         <div className="card-text-bottom">
@@ -29,13 +29,14 @@ export default function BlogItem({
           ></BlogItemText>
         </div>
       </div>
+      </Link>
     );
   } else {
     return (
+      <Link to="/blog/2">
       <div
         key={index}
         className="card-2"
-        onClick={() => console.log("TODO: nav to blog")}
       >
         <img src={blogPost.image} className="card-img-left" alt="..." />
         <div className="card-text-right">
@@ -45,6 +46,7 @@ export default function BlogItem({
           ></BlogItemText>
         </div>
       </div>
+      </Link>
     );
   }
 }

@@ -1,19 +1,28 @@
-import React from 'react'
+import React from "react";
 
 export default function Footer() {
   return (
-    <footer className='text-body-secondary py-5'>
-        <div className='container'>
-            <p className='float-end mb-1'>
-                <a href='.page-title'>Back to the top</a>
-            </p>
-            <p className='mb-1'>
-                Example Text
-            </p>
-            <p className='mb-0'>
-                Example Text 2
-            </p>
-        </div>
-    </footer>
-  )
+    <div className="container mt-5">
+      <footer className="py-3 my-4">
+        <ul className="nav justify-content-center border-bottom pb-3 mb-3">
+          <li className="nav-item">
+            <a href="" className="nav-link px-2 text-muted">
+              Home
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="" className="nav-link px-2 text-muted">
+              Categories
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="" className="nav-link px-2 text-muted">
+              Blogs
+            </a>
+          </li>
+        </ul>
+        <p className="text-center text-muted">&copy; 2024 The Blog App, Inc</p>
+      </footer>
+    </div>
+  );
 }
