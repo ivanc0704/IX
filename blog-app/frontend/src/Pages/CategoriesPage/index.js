@@ -31,7 +31,7 @@ export default function CategoriesPage() {
       <div className="container">
         <Heading />
         </div>
-        <CategoryList categories={[categories]}/>
+        <CategoryList categories={categories}/>
     </>
   )
 }

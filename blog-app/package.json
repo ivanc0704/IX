@@ -1,5 +1,15 @@
 {
   "dependencies": {
     "create-react-app": "^5.0.1"
-  }
+  },
+  "name": "ix-blog-app",
+  "version": "1.0.0",
+  "description": "This is the backend server for my blog app",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ivan Chen",
+  "license": "ISC"
 }

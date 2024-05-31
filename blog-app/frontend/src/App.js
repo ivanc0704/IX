@@ -18,17 +18,20 @@ const routes = [
     path:"/home",
     element: <Home />,
   },
-  {
-    path:"/blogs",
-    element:<BlogsPage />,
-  },
   { path:"/categories",
     element:<CategoriesPage />,
   },
-  {
-    path: "/blog/:blogId",
-    element: <BlogPage />,
-  },
+  { path:"/categories/:categoryId",
+  element:<CategoriesPage />,
+},
+{
+  path: "/blogs/:categoryId?",
+  element: <BlogsPage />,
+},
+{
+  path: "/blog/:blogId",
+  element: <BlogPage />,
+},
 ];
 
 const router = createBrowserRouter(routes)
