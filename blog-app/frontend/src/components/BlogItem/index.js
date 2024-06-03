@@ -1,58 +1,54 @@
 import React from "react";
-import PropTypes from "prop-types"
 
 import BlogItemText from "../BlogItemText";
-import { Link } from "react-router-dom";
-
+import EditButtons from "../EditButtons";
 
 import "../../App.css";
 import "./index.css";
 
 export default function BlogItem({
   index,
-  blogPost,
-  setBlog,
+  blog,
   imageOrientation,
+  onBlogEdit,
+  onBlogDelete,
 }) {
+  const EditButtonsContainer = () => {
+    return (
+      <EditButtons
+        onEdit={() => onBlogEdit(blog)}
+        onDelete={() => onBlogDelete(blog)}
+      />
+    );
+  };
+
   if (imageOrientation === "top") {
     return (
-      <Link to={"/blog/" + index+1}>
       <div
         key={index}
         className="card-1"
+        onClick={() => console.log("TODO: nav to blog")}
       >
-        <img src={blogPost.image} className="card-img-top" alt="..." />
+        <img src={blog.image} className="card-img-top" alt="..." />
         <div className="card-text-bottom">
-          <BlogItemText
-            blogPost={blogPost}
-            headerFontSize="20px"
-          ></BlogItemText>
+          <BlogItemText blog={blog} headerFontSize="20px" />
+          {onBlogEdit && onBlogDelete ? <EditButtonsContainer /> : null}
         </div>
       </div>
-      </Link>
     );
   } else {
     return (
-      <Link to="/blog/2">
       <div
         key={index}
         className="card-2"
+        onClick={() => console.log("TODO: nav to blog")}
       >
-        <img src={blogPost.image} className="card-img-left" alt="..." />
-        <div className="card-text-right">
-          <BlogItemText
-            blogPost={blogPost}
-            headerFontSize="20px"
-          ></BlogItemText>
+        <img src={blog.image} className="card-img-left" alt="..." />
+        <div style={{ position: "relative" }} className="card-text-right">
+          <BlogItemText blog={blog} headerFontSize="20px" />
+          {onBlogEdit && onBlogDelete ? <EditButtonsContainer /> : null}
         </div>
       </div>
-      </Link>
     );
   }
-}
-
-BlogItem.propTypes = {
-  index: PropTypes.number.isRequired,
-  blogPost: PropTypes.object.isRequired,
-  imageOrientation: PropTypes.string,
 }

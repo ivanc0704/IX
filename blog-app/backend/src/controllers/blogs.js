@@ -24,7 +24,7 @@ const createBlogs = async (req, res) => {
       data: blogRes,
     });
   } catch (err) {
-    res.status(500).json({ message: error.message, data: {} });
+    res.status(500).json({ message: "error", data: {} });
   }
 };
 
@@ -36,7 +36,7 @@ const getBlogs = async (req, res) => {
       data: blogs,
     });
   } catch (err) {
-    res.status(500).json({ message: error.message, data: {} });
+    res.status(500).json({ message: "error", data: {} });
   }
 };
 
@@ -52,7 +52,7 @@ const getBlogById = async (req, res) => {
       res.status(404).json({ message: "Blog not found!", data: {} });
     }
   } catch (err) {
-    res.status(500).json({ message: error.message, data: {} });
+    res.status(500).json({ message: "error", data: {} });
   }
 };
 
@@ -71,7 +71,7 @@ const getBlogsByCategoryID = async (req, res) => {
       data: blogs,
     });
   } catch (err) {
-    res.status(500).json({ message: error.message, data: {} });
+    res.status(500).json({ message: "error", data: {} });
   }
 };
 
@@ -97,7 +97,7 @@ const updateBlogByID = async (req, res) => {
       res.status(404).json({ message: "Blog not found!", data: [] });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message, data: {} });
+    res.status(500).json({ message: "error", data: {} });
   }
 };
 
@@ -112,7 +112,7 @@ const deleteBlogByID = async (req, res) => {
       return res.status(404).json({ message: "Blog not found!" });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "error" });
   }
 };
 const blogController = {

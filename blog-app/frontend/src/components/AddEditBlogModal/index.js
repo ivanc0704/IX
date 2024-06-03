@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+import PropTypes from "prop-types";
+
 import { Modal } from "bootstrap";
 
 import Categories from "../Categories";
@@ -8,7 +10,9 @@ export default function AddEditBlogModal({
   addBlog,
   editBlog,
   categories,
-  createBlogPost,
+  createBlog,
+  updateBlog,
+  onClose,
 }) {
   const [blog, setBlog] = useState();
 
@@ -22,8 +26,46 @@ export default function AddEditBlogModal({
     if (addBlog) {
       setBlog(addBlog);
       addEditModal.show();
+    } else if (editBlog) {
+      setBlog(editBlog);
+      addEditModal.show();
     }
-  }, [addBlog]);
+  }, [addBlog, editBlog, addEditModal]);
+
+  const onSubmit = (e) => {
+    e?.preventDefault();
+    if (isFormValid()) {
+      if (addBlog) {
+        createBlog(blog);
+      } else if (editBlog) {
+        updateBlog(blog);
+      }
+      resetBlog();
+      addEditModal?.hide();
+    }
+  };
+
+  const resetBlog = () => {
+    setBlog({
+      title: "",
+      description: "",
+      categories: [],
+      content: [],
+      authorId: "",
+    });
+  };
+
+  const isFormValid = () => {
+    const form = document.getElementById("blogForm");
+    form?.classList?.add("was-validated");
+    return form?.checkValidity();
+  };
+
+  const onCloseModal = () => {
+    resetBlog();
+    addEditModal?.hide();
+    onClose();
+  };
 
   if (!categories && !categories?.length) {
     return null;
@@ -38,7 +80,7 @@ export default function AddEditBlogModal({
         aria-labelledby="addEditModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="addEditModalLabel">
@@ -47,8 +89,8 @@ export default function AddEditBlogModal({
               <button
                 type="button"
                 className="btn-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={onCloseModal}
               ></button>
             </div>
             <div className="modal-body">
@@ -255,22 +297,14 @@ export default function AddEditBlogModal({
               <button
                 type="button"
                 className="btn btn-secondary"
-                data-bs-dismiss="modal"
+                onClick={onCloseModal}
               >
                 Close
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => {
-                  const newBlog = blog;
-                  newBlog.categoryIds = blog.categories.map((x) => x.id);
-                  delete blog.categories;
-                  newBlog.authorId = blog.author.id;
-                  delete blog.author;
-                  createBlogPost(blog);
-                  addEditModal.hide();
-                }}
+                onClick={onSubmit}
               >
                 Save changes
               </button>
@@ -281,3 +315,12 @@ export default function AddEditBlogModal({
     </div>
   );
 }
+
+AddEditBlogModal.prototype = {
+  addBlog: PropTypes.object,
+  editBlog: PropTypes.object,
+  categories: PropTypes.array,
+  createBlog: PropTypes.func,
+  updateBlog: PropTypes.func,
+  onClose: PropTypes.func,
+};

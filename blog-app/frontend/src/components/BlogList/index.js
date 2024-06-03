@@ -3,22 +3,24 @@ import PropTypes from "prop-types";
 
 import BlogItem from "../BlogItem";
 
-export default function BlogList({ blogPosts }) {
-  if (!blogPosts && !blogPosts?.length) {
+import "./index.css";
+
+export default function BlogList({ blogs, onBlogEdit, onBlogDelete }) {
+  if (!blogs && !blogs?.length) {
     return null;
   }
 
-  // TODO: Styling
   return (
-    <div className="d-flex w-100">
-      {blogPosts.map((blog, index) => {
+    <div className="blog-list">
+      {blogs.map((blog, index) => {
         return (
           <BlogItem
             key={index}
             index={index}
-            blogPost={blog}
-            setBlog={() => {}}
+            blog={blog}
             imageOrientation={"top"}
+            onBlogEdit={onBlogEdit}
+            onBlogDelete={onBlogDelete}
           />
         );
       })}
@@ -27,5 +29,7 @@ export default function BlogList({ blogPosts }) {
 }
 
 BlogList.prototype = {
-    blogPosts: PropTypes.array.isRequired,
+  blogs: PropTypes.array.isRequired,
+  onBlogEdit: PropTypes.func.isRequired,
+  onBlogDelete: PropTypes.func.isRequired,
 };

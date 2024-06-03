@@ -1,30 +1,27 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-import Heading from "../../components/Heading";
 import Navbar from "../../components/Navbar";
-import BlogGrid from "../../components/BlogGrid";
-import Footer from "../../components/Footer";
+import Heading from "../../components/Heading";
 import SubHeading from "../../components/SubHeading";
-import CategoryList from "../../components/CategoryList";
+import BlogGrid from "../../components/BlogGrid";
+import CategoriesList from "../../components/CategoriesList";
+import Footer from "../../components/Footer";
 
 import blogService from "../../services/blogService";
 import categoryService from "../../services/categoryService";
 
-export default function HomePage() {
-
+export default function Home() {
   const [blogs, setBlogs] = useState();
   const [categories, setCategories] = useState();
 
-
   useEffect(() => {
-
-    const fetchBlogs = async () =>{
-      try{
-        const blogsRes = await blogService.getBlogs();
-        const categoryRes = await categoryService.getCategories();
-        setBlogs(blogsRes);
-        setCategories(categoryRes);
-      } catch(err){
+    const fetchBlogs = async () => {
+      try {
+        const blogsRes = await blogService.fetchBlogs();
+        const categoryRes = await categoryService.fetchCategories();
+        setBlogs(blogsRes.data);
+        setCategories(categoryRes.data);
+      } catch (err) {
         console.log(err);
       }
     };
@@ -36,9 +33,9 @@ export default function HomePage() {
       <Navbar />
       <Heading />
       <div className="container">
-        <SubHeading subHeading={"Recent Blog Posts"} />
+        <SubHeading subHeading={"Recent blog posts"} />
         <BlogGrid blogPosts={blogs} />
-        <CategoryList categories={categories}/>
+        <CategoriesList categories={categories} />
         <Footer />
       </div>
     </>
