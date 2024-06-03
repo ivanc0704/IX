@@ -7,7 +7,7 @@ const blogController = require("../controllers/blogs");
  * POST /api/blogs
  */
 router.post("/", (req, res) => {
-  blogController.createBlog(req, res);
+  blogController.createBlogs(req, res);
 });
 
 /**
