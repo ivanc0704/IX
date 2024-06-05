@@ -5,7 +5,10 @@ import PropTypes from "prop-types";
 import "./index.css";
 import EditButtons from "../EditButtons";
 
+
 export default function CategoriesList({ categories, onEdit, onDelete }) {
+  const user = JSON.parse(localStorage.getItem("user"))
+
   if (!categories && !categories?.length) {
     return null;
   }
@@ -32,10 +35,10 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
             </div>
             <div className="card-body">
               <p className="card-text">
-                {category.description.substring(1, 100)} ...
+                {category.description.substring(1, 100)}
               </p>
             </div>
-            {onEdit && onDelete && (
+            {user && user.token && onEdit && onDelete && (
               <EditButtons onEdit={()=>{
                 onEdit(category);
               

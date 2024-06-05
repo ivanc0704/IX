@@ -3,48 +3,26 @@ const router = express.Router();
 
 const blogController = require("../controllers/blogs");
 
-/**
- * POST /api/blogs
- */
-router.post("/", (req, res) => {
+const { protect } = require("../middleware/authMiddleware");
+
+router.post("/", protect, (req, res) => {
   blogController.createBlogs(req, res);
 });
 
-/**
- * GET /api/blogs
- */
 router.get("/", (req, res) => {
   blogController.getBlogs(req, res);
 });
 
-/**
- * Get blogs by blogID
- * GET /api/blogs/:id
- */
 router.get("/:id", (req, res) => {
-  blogController.getBlogById(req, res);
+  blogController.getBlog(req, res);
 });
 
-/**
- * Get blogs by categoryID
- * GET /api/blogs/categories/:id
- */
-router.get("/categories/:id", (req, res) => {
-  blogController.getBlogsByCategoryID(req, res);
+router.put("/:id", protect, (req, res) => {
+  blogController.updateBlog(req, res);
 });
 
-/**
- * Put /api/blogs/
- */
-router.put("/:id", (req, res) => {
-  blogController.updateBlogByID(req, res);
-});
-
-/**
- * DELETE /api/blogs/
- */
-router.delete("/:id", (req, res) => {
-  blogController.deleteBlogByID(req, res);
+router.delete("/:id", protect, (req, res) => {
+  blogController.deleteBlog(req, res);
 });
 
 module.exports = router;

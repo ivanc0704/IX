@@ -13,6 +13,8 @@ import AddEditCategoryModal from "../../components/AddEditCategoryModal";
 import DeleteCategoryModal from "../../components/DeleteCategoryModal";
 
 export default function CategoriesPage() {
+  const user = JSON.parse(localStorage.getItem("user"))
+
   const [categories, setCategories] = useState([]);
   const [addCategory, setAddCategory] = useState();
   const [editCategory, setEditCategory] = useState();
@@ -102,12 +104,14 @@ export default function CategoriesPage() {
   };
 
   const AddButton = () => {
+    if(!user?.token) return null;
     return (
       <button className="btn btn-outline-dark h-75" onClick={onCategoryAdd}>
         ADD CATEGORY
       </button>
     );
   };
+  
 
   if (loading) {
     return <Loading />;

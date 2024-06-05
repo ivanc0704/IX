@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema(
   {
-    author: {
+    authorId: {
       type: Map,
       of: mongoose.Schema.Types.Mixed,
       required: true,
