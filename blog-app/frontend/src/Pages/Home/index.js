@@ -1,43 +1,81 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import Navbar from "../../components/Navbar";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBlogs, reset as resetBlog } from "../../features/blogSlice";
+import {
+  fetchCategories,
+  reset as resetCategory,
+} from "../../features/categoriesSlice";
+
+import { Toast, ToastContainer } from "react-bootstrap";
+
+import "../../App.css";
+
 import Heading from "../../components/Heading";
-import SubHeading from "../../components/SubHeading";
+import Navbar from "../../components/Navbar";
 import BlogGrid from "../../components/BlogGrid";
-import CategoriesList from "../../components/CategoriesList";
 import Footer from "../../components/Footer";
+import SubHeading from "../../components/SubHeading";
+import CategoryList from "../../components/CategoriesList";
 
-import blogService from "../../services/blogService";
-import categoryService from "../../services/categoryService";
+export default function HomePage() {
+  const dispatch = useDispatch();
 
-export default function Home() {
-  const [blogs, setBlogs] = useState();
-  const [categories, setCategories] = useState();
+  const {
+    blogs,
+    isError: isBlogsError,
+    isSuccess: blogsSuccess,
+    isLoading: isLoadingBlogs,
+    message: blogsMessage,
+  } = useSelector((state) => state.blogs);
+  const {
+    categories,
+    isError: isCategoriesError,
+    isSuccess: isCategoriesSuccess,
+    isLoading: isLoadingCategories,
+    message: categoriesMessage,
+  } = useSelector((state) => state.categories);
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const blogsRes = await blogService.fetchBlogs();
-        const categoryRes = await categoryService.fetchCategories();
-        setBlogs(blogsRes.data);
-        setCategories(categoryRes.data);
-      } catch (err) {
-        console.log(err);
-      }
+    dispatch(fetchCategories());
+    dispatch(fetchBlogs());
+    return () => {
+      dispatch(resetBlog());
+      dispatch(resetCategory());
     };
-    fetchBlogs();
-  }, []);
+  }, [dispatch]);
+
+  if (isLoadingCategories || isLoadingBlogs) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <Navbar />
-      <Heading />
       <div className="container">
-        <SubHeading subHeading={"Recent blog posts"} />
-        <BlogGrid blogPosts={blogs} />
-        <CategoriesList categories={categories} />
+        <Heading />
+        <SubHeading subHeading={"Recent Blog Posts"} />
+        <BlogGrid blogPosts={blogs}></BlogGrid>
+        <SubHeading subHeading={"Categories"} />
+        <CategoryList categories={categories}></CategoryList>
         <Footer />
       </div>
+      <ToastContainer className="p-3" position="top-end" style={{ zIndex: 1 }}>
+        <Toast
+          bg="danger"
+          onClose={() => {}}
+          autohide
+          show={isCategoriesError || isBlogsError}
+          delay={5000}
+        >
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body style={{ color: "white" }}>
+            {categoriesMessage || blogsMessage}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </>
   );
 }
