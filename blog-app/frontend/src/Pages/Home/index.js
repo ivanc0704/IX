@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBlogs, reset as resetBlog } from "../../features/blogSlice";
+import { fetchBlogs, reset as resetBlog } from "../../features/blogsSlice";
 import {
   fetchCategories,
   reset as resetCategory,
@@ -17,6 +17,10 @@ import BlogGrid from "../../components/BlogGrid";
 import Footer from "../../components/Footer";
 import SubHeading from "../../components/SubHeading";
 import CategoryList from "../../components/CategoriesList";
+import SuccessToast from "../../components/SuccessToast";
+import ErrorToast from "../../components/ErrorToast";
+import Loading from "../../components/Loading";
+
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -24,10 +28,11 @@ export default function HomePage() {
   const {
     blogs,
     isError: isBlogsError,
-    isSuccess: blogsSuccess,
+    isSuccess: isBlogsSuccess,
     isLoading: isLoadingBlogs,
     message: blogsMessage,
   } = useSelector((state) => state.blogs);
+
   const {
     categories,
     isError: isCategoriesError,
@@ -37,17 +42,22 @@ export default function HomePage() {
   } = useSelector((state) => state.categories);
 
   useEffect(() => {
-    dispatch(fetchCategories());
-    dispatch(fetchBlogs());
-    return () => {
-      dispatch(resetBlog());
-      dispatch(resetCategory());
+    const fetchData = async () => {
+      try {
+        dispatch(fetchBlogs());
+        dispatch(fetchCategories());
+      } catch (err) {
+        console.error(err);
+      }
     };
-  }, [dispatch]);
+    fetchData();
+  }, []);
+
 
   if (isLoadingCategories || isLoadingBlogs) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
+  console.log(blogs)
 
   return (
     <>
@@ -60,22 +70,22 @@ export default function HomePage() {
         <CategoryList categories={categories}></CategoryList>
         <Footer />
       </div>
-      <ToastContainer className="p-3" position="top-end" style={{ zIndex: 1 }}>
-        <Toast
-          bg="danger"
-          onClose={() => {}}
-          autohide
-          show={isCategoriesError || isBlogsError}
-          delay={5000}
-        >
-          <Toast.Header>
-            <strong className="me-auto">Error</strong>
-          </Toast.Header>
-          <Toast.Body style={{ color: "white" }}>
-            {categoriesMessage || blogsMessage}
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
+      <SuccessToast
+        show={isBlogsSuccess || isCategoriesSuccess}
+        message={blogsMessage || categoriesMessage}
+        onClose={() => {
+          dispatch(resetBlog());
+          dispatch(resetCategory());
+        }}
+      />
+      <ErrorToast
+        show={isBlogsError || isCategoriesError}
+        message={blogsMessage || categoriesMessage}
+        onClose={() => {
+          dispatch(resetBlog());
+          dispatch(resetCategory());
+        }}
+      />
     </>
   );
 }

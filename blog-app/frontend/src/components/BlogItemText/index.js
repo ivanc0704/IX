@@ -4,16 +4,16 @@ import PropTypes from "prop-types";
 import Categories from "../Categories";
 import "./index.css";
 
-export default function BlogItemText({ blogPost, headerFontSize }) {
+export default function BlogItemText({ blog, headerFontSize }) {
   return (
     <div>
       <div style={{ display: "flex" }}>
         <p className="date-author-text">
-          {blogPost.author.firstName} {blogPost.author.lastName}
+          {blog.author.firstName} {blog.author.lastName}
         </p>
         <div className="dot-divider"></div>
         <p className="date-author-text">
-          {blogPost.createdAt.substring(0, 10)}
+          {blog.createdAt.substring(0, 10)}
         </p>
       </div>
       <p
@@ -23,16 +23,16 @@ export default function BlogItemText({ blogPost, headerFontSize }) {
           textAlign: "left",
         }}
       >
-        {blogPost.title}
+        {blog.title}
       </p>
       <p style={{ fontSize: "16px", color: "#667085", textAlign: "left" }}>
-        {blogPost.description.substring(0, 100)}...
+        {blog.description.substring(0, 100)}...
       </p>
-      <Categories blogPost={blogPost?.categories} />
+      <Categories blog={blog?.categories} />
     </div>
   );
 }
 BlogItemText.propTypes = {
-  blogPost: PropTypes.array.isRequired,
+  blog: PropTypes.array.isRequired,
   headerFontSize: PropTypes.string.isRequired,
 };
