@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import "./index.css";
@@ -8,6 +8,7 @@ import EditButtons from "../EditButtons";
 
 export default function CategoriesList({ categories, onEdit, onDelete }) {
   const user = JSON.parse(localStorage.getItem("user"))
+  const navigate = useNavigate();
 
   if (!categories && !categories?.length) {
     return null;
@@ -17,11 +18,15 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
     <div className="category-list">
       {categories.map((category) => {
         return (
-          <Link
+          <button
             key={category.id}
             className="card"
-            style={{ borderRadius: "0px", border: "none" }}
-            to={`/categories`}
+            style={{ borderRadius: "0px", border: "none", padding: 0 }}
+            onClick={() => {
+              if ((!user && !user?.token) || (!onEdit && !onDelete)) {
+                navigate(`/blogs/${category.id}`);
+              }
+            }}
           >
             <div
               className="card-body w-100"
@@ -35,18 +40,23 @@ export default function CategoriesList({ categories, onEdit, onDelete }) {
             </div>
             <div className="card-body">
               <p className="card-text">
-                {category.description.substring(1, 100)}
+                {category.description.substring(1, 100)} ...
               </p>
             </div>
-            {user && user.token && onEdit && onDelete && (
-              <EditButtons onEdit={()=>{
-                onEdit(category);
-              
-              }} onDelete={()=>{
-                onDelete(category);
-              }} />
+            {user && user?.token && onEdit && onDelete && (
+              <EditButtons
+                onEdit={() => {
+                  onEdit(category);
+                }}
+                onDelete={() => {
+                  onDelete(category);
+                }}
+                onNavigate={() => {
+                  navigate(`/blogs/${category.id}`);
+                }}
+              />
             )}
-          </Link>
+          </button>
         );
       })}
     </div>

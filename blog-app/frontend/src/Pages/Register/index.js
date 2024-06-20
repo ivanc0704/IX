@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { register, reset } from "../../features/authSlice";
+import "./index.css";
+
+import { register, resetSuccessAndError } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
+import Loading from "../../components/Loading";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -24,12 +27,6 @@ export default function RegisterPage() {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (isSuccess || user) {
-      navigate("/home");
-    }
-  }, [user, isError, isSuccess, isLoading, message, navigate]);
-
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -39,8 +36,16 @@ export default function RegisterPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(register(formData));
+    try {
+      dispatch(register(formData));
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
   };
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -124,14 +129,14 @@ export default function RegisterPage() {
         show={isSuccess}
         message={message}
         onClose={() => {
-          dispatch(reset());
+          dispatch(resetSuccessAndError());
         }}
       />
       <ErrorToast
         show={isError}
         message={message}
         onClose={() => {
-          dispatch(reset());
+          dispatch(resetSuccessAndError());
         }}
       />
     </>

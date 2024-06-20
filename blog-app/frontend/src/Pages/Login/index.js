@@ -5,6 +5,7 @@ import { login, resetSuccessAndError } from "../../features/authSlice";
 
 import SuccessToast from "../../components/SuccessToast";
 import ErrorToast from "../../components/ErrorToast";
+import Loading from "../../components/Loading";
 
 import "./index.css";
 
@@ -12,15 +13,9 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
+  const { isSuccess, isError, message, isLoading } = useSelector(
     (state) => state.auth
   );
-
-  useEffect(() => {
-    if (isSuccess || user) {
-      navigate("/home");
-    }
-  }, [user, isError, isSuccess, isLoading, message, navigate]);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -38,11 +33,16 @@ export default function LoginPage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    try {
+      dispatch(login(formData));
+      navigate("/home");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (

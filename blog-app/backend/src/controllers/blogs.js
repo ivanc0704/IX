@@ -3,13 +3,15 @@ const Blog = require("../models/Blog");
 const createBlogs = async (req, res) => {
   try {
     console.log(req.body);
-    const categoryIds = req?.body?.categories.map((x) => x.id);
+    const categoryIds = JSON.parse(req?.body?.categories).map((x) => x.id);
     const blog = new Blog({
       title: req.body.title,
       description: req.body.description,
-      image: req.body.image,
-      content: req.body.content,
-      authorId: req.body.authorId,
+      image: req?.file?.path
+        ? req?.protocol + "://" + req?.headers?.host + "/" + req.file.path
+        : "",
+        content: JSON.parse(req?.body?.content),
+        authorId: req.body.authorId,
       categoryIds: categoryIds,
     });
 
@@ -25,8 +27,8 @@ const createBlogs = async (req, res) => {
       message: "Blog created!",
       data: blogRes,
     });
-  } catch (err) {
-    res.status(500).json({ message: err.message, data: {} });
+  } catch (error) {
+    res.status(500).json({ message: error.message, data: {} });
   }
 };
 
@@ -113,12 +115,17 @@ const updateBlogByID = async (req, res) => {
       })
       .populate({ path: "authorId" });
     if (blog) {
-      const categoryIds = req?.body?.categories.map((x) => x.id);
+      const categoryIds = JSON.parse(req?.body?.categories).map((x) => x.id);
       blog.authorId = req?.body?.authorId || blog.authorId;
       blog.categoryIds = categoryIds ? categoryIds : blog.categoryIds;
-      blog.title = req?.body?.title || blog.title;
+      (blog.image = req?.file?.path
+        ? req?.protocol + "://" + req?.headers?.host + "/" + req.file.path
+        : blog.image),
+        (blog.title = req?.body?.title || blog.title);
       blog.description = req?.body?.description || blog.description;
-      blog.content = req.body.content ? req.body.content : blog.content;
+      blog.content = req.body.content
+        ? JSON.parse(req.body.content)
+        : blog.content;
       const updatedBlog = await blog.save();
       const blogRes = await updatedBlog.populate({
         path: "categoryIds",
@@ -127,10 +134,11 @@ const updateBlogByID = async (req, res) => {
     } else {
       res.status(404).json({ message: "Blog not found!", data: [] });
     }
-  } catch (err) {
-    res.status(500).json({ message: err.message, data: {} });
+  } catch (error) {
+    res.status(500).json({ message: error.message, data: {} });
   }
 };
+
 
 const deleteBlogByID = async (req, res) => {
   try {

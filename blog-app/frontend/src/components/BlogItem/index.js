@@ -1,9 +1,12 @@
 import React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import BlogItemText from "../BlogItemText";
 import EditButtons from "../EditButtons";
 
-import "../../App.css";
+import PropTypes from "prop-types";
+
 import "./index.css";
 
 export default function BlogItem({
@@ -14,12 +17,20 @@ export default function BlogItem({
   onBlogDelete,
 }) {
   const user = JSON.parse(localStorage.getItem("user"))
+  const navigate = useNavigate();
+  const navigateToBlog = () => {
+    if ((!user && !user?.token) || (!onBlogEdit && !onBlogDelete)) {
+      navigate(`/blog/${blog.id}`);
+    }
+  };
+
 
   const EditButtonsContainer = () => {
     return (
       <EditButtons
-        onEdit={() => onBlogEdit(blog)}
-        onDelete={() => onBlogDelete(blog)}
+        onEdit={() => {onBlogEdit(blog)}}
+        onDelete={() => {onBlogDelete(blog)}}
+        onNavigate={() => navigate(`/blog/${blog.id}`)}
       />
     );
   };
@@ -29,12 +40,14 @@ export default function BlogItem({
       <div
         key={index}
         className="card-1"
-        onClick={() => console.log("TODO: nav to blog")}
+        onClick={navigateToBlog}
       >
         <img src={blog.image} className="card-img-top" alt="..." />
         <div className="card-text-bottom">
           <BlogItemText blog={blog} headerFontSize="20px" />
-          {onBlogEdit && onBlogDelete ? <EditButtonsContainer /> : null}
+          {user && user.token && onBlogEdit && onBlogDelete ? (
+            <EditButtonsContainer />
+          ) : null}
         </div>
       </div>
     );
@@ -43,14 +56,24 @@ export default function BlogItem({
       <div
         key={index}
         className="card-2"
-        onClick={() => console.log("TODO: nav to blog")}
+        onClick={navigateToBlog}
       >
         <img src={blog.image} className="card-img-left" alt="..." />
         <div style={{ position: "relative" }} className="card-text-right">
           <BlogItemText blog={blog} headerFontSize="20px" />
-          {user && user.token && onBlogEdit && onBlogDelete ?  <EditButtonsContainer /> : null}
+          {user && user.token && onBlogEdit && onBlogDelete ? (
+            <EditButtonsContainer />
+          ) : null}
         </div>
       </div>
     );
   }
 }
+
+BlogItem.propTypes = {
+  index: PropTypes.number.isRequired,
+  blog: PropTypes.object.isRequired,
+  imageOrientation: PropTypes.string.isRequired,
+  onBlogEdit: PropTypes.func,
+  onBlogDelete: PropTypes.func,
+};

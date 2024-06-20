@@ -104,14 +104,13 @@ export default function CategoriesPage() {
   };
 
   const AddButton = () => {
-    if(!user?.token) return null;
+    if (!user || !user.token) return null;
     return (
-      <button className="btn btn-outline-dark h-75" onClick={onCategoryAdd}>
+      <button className="btn btn-outline-dark m-3" onClick={onCategoryAdd}>
         ADD CATEGORY
       </button>
     );
   };
-  
 
   if (loading) {
     return <Loading />;

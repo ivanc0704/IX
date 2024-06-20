@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Modal } from "bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
+import FormImage from "../FormImage";
 import Categories from "../Categories";
 
 import {
@@ -13,6 +14,10 @@ import {
 } from "../../features/blogsSlice";
 
 export default function AddEditBlogModal() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const [blogImage, setBlogImage] = useState();
+
   const dispatch = useDispatch();
 
   const { addBlog, editBlog } = useSelector((state) => state.blogs);
@@ -35,19 +40,6 @@ export default function AddEditBlogModal() {
       addEditModal?.show();
     }
   }, [addBlog, editBlog, addEditModal]);
-
-  const onSubmit = (e) => {
-    e?.preventDefault();
-    if (isFormValid()) {
-      if (addBlog) {
-        dispatch(createBlog(blog));
-      } else if (editBlog) {
-        dispatch(updateBlog(blog));
-      }
-      resetBlog();
-      addEditModal?.hide();
-    }
-  };
 
   const resetBlog = () => {
     setBlog({
@@ -74,6 +66,41 @@ export default function AddEditBlogModal() {
       dispatch(setAddBlog(null));
     }
   };
+  const buildFormData = () => {
+    const formData = new FormData();
+    formData.append("id", blog.id);
+    formData.append("image", blog.image);
+    formData.append("title", blog.title);
+    formData.append("description", blog.description);
+    formData.append("categories", JSON.stringify(blog.categories));
+    formData.append("content", JSON.stringify(blog.content));
+      formData.append("authorId", user?._id);
+    return formData;
+  };
+  
+  const onSubmit = (e) => {
+    e?.preventDefault();
+    if (isFormValid()) {
+      const blogForm = buildFormData();
+      if (addBlog) {
+        dispatch(createBlog(blogForm));
+      } else if (editBlog) {
+        dispatch(updateBlog(blogForm));
+      }
+      resetBlog();
+      addEditModal?.hide();
+    }
+  };
+  
+  const onImageChange = (e) => {
+    if (e?.target?.files?.length) {
+      const file = e.target.files[0];
+      setBlogImage(URL.createObjectURL(file));
+      setBlog({ ...blog, image: file });
+    }
+    console.log(blogImage)
+  };
+  
 
   if (!categories && !categories?.length) {
     return null;
@@ -103,6 +130,8 @@ export default function AddEditBlogModal() {
             </div>
             <div className="modal-body">
               <form id="blogForm">
+              <FormImage image={blogImage} onChange={onImageChange} />
+
                 <div className="input-group mb-3">
                   <label
                     className="input-group-text"

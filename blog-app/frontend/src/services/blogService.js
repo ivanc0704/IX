@@ -2,10 +2,10 @@ const createBlog = async (blog) => {
   const response = await fetch("http://localhost:8000/api/blogs", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
       Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
-    body: JSON.stringify(blog),
+    body: blog,
   });
 
   if (!response.ok) {
@@ -119,13 +119,13 @@ const fetchBlogsByAuthorId = async (authorId) => {
 };
 
 const updateBlog = async (blog) => {
-  const response = await fetch("http://localhost:8000/api/blogs/" + blog.id, {
+  const response = await fetch("http://localhost:8000/api/blogs/" + blog.get('id'), {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "application/json",
       Authorization: "Bearer " + JSON.parse(localStorage.getItem("user")).token,
     },
-    body: JSON.stringify(blog),
+    body: blog,
   });
   if (!response.ok) {
     try {

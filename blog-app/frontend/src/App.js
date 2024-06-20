@@ -13,6 +13,7 @@ import BlogPage from "./Pages/Blog";
 import CategoriesPage from "./Pages/Categories";
 import LoginPage from "./Pages/Login";
 import RegisterPage from "./Pages/Register";
+import ProfilePage from "./Pages/Profile"
 
 const routes = [
   {
@@ -42,6 +43,10 @@ const routes = [
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/profile/:authorId",
+    element: <ProfilePage />,
   },
 ];
 const router = createBrowserRouter(routes);
